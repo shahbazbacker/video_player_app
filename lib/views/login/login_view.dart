@@ -14,8 +14,6 @@ import 'package:video_player_test/views/loginsignup/login_signup_view.dart';
 class LoginView extends StatelessWidget {
   final LoginController loginController = Get.put(LoginController());
 
-  var loginNum = "";
-  String phone;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TextEditingController _textLoginMobController =

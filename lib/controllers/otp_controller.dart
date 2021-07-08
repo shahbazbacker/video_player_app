@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:video_player_test/services/remote_services.dart';
 import 'package:video_player_test/views/loginsignup/login_signup_view.dart';
 import 'package:get/get.dart';
+import 'package:video_player_test/views/videolist/videolist.dart';
 
 class OtpController extends GetxController {
   var isLoading = true.obs;
@@ -31,7 +32,8 @@ class OtpController extends GetxController {
           if (homeData.status == "success") {
             print("routed to otpscreen");
 
-            Get.to(LoginSignupView());
+            Get.to(() => VideoListView());
+            box.write('isLoggedIn', true);
             box.write('otpNumber', otpEntered);
             print("otp in box phone is ${box.read("phoneNumber")}");
           } else {
@@ -39,6 +41,7 @@ class OtpController extends GetxController {
                 snackPosition: SnackPosition.BOTTOM);
             box.write('otpNumber', '');
             print("otp in box phone is ${box.read("phoneNumber")}");
+            box.write('isLoggedIn', false);
           }
         }
       } finally {

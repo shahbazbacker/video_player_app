@@ -34,7 +34,7 @@ class LoginController extends GetxController {
             print("phone number ${phoneNumber}");
             print("phone number from box ${box.read("phoneNumber")}");
 
-            Get.to(OtpView());
+            Get.to(() => OtpView());
             box.write('phoneNumber', phoneNumber);
           } else {
             Get.snackbar("Error", "No user found with that number",

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:video_player_test/models/login_model.dart';
 import 'package:video_player_test/models/otp_model.dart';
+import 'package:video_player_test/models/video_model.dart';
 
 var dio = Dio(BaseOptions(headers: {
   "Content-Type": "application/x-www-form-urlencoded",
@@ -60,5 +61,18 @@ class RemoteServices {
 
     print(OtpModel.fromJson(response.data));
     return OtpModel.fromJson(response.data);
+  }
+
+  static fetchVideoList() async {
+    response = await dio.get('http://139.59.89.155/api/v1/videos/');
+    print("response is");
+    print(response.data);
+    // Optionally the request above could also be done as
+    print("video model is");
+
+    // String jsonDataToString = jsonDecode(response.data);
+
+    print(VideoModel.fromJson(response.data));
+    return VideoModel.fromJson(response.data);
   }
 }

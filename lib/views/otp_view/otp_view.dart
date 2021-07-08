@@ -16,14 +16,6 @@ class OtpView extends StatelessWidget {
 
   TextEditingController _textLoginOtpController =
       TextEditingController(text: "");
-  String OTP = "";
-  String mobile_number = "";
-
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-  String thisText = "";
-  int pinLength = 4;
-  bool hasError = false;
-  String errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +26,6 @@ class OtpView extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      key: _scaffoldKey,
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -101,7 +92,6 @@ class OtpView extends StatelessWidget {
   Widget _verifyButton(size) {
     return GestureDetector(
       onTap: () {
-        print(OTP);
         // Navigator.pushReplacementNamed(context, "/register_screen");
         // doVarifyOtp(mobile_number, OTP);
       },
@@ -150,8 +140,8 @@ class OtpView extends StatelessWidget {
               highlightColor: CupertinoColors.activeBlue,
               defaultBorderColor: CupertinoColors.systemGrey3,
               hasTextBorderColor: CupertinoColors.systemGrey3,
-              maxLength: pinLength,
-              hasError: hasError,
+              // maxLength: pinLength,
+              // hasError: hasError,
               maskCharacter: "🐶",
               onTextChanged: (text) {
                 // setState(() {
@@ -161,8 +151,8 @@ class OtpView extends StatelessWidget {
               },
               isCupertino: true,
               onDone: (text) {
-                print("DONE $text");
-                OTP = text;
+                // print("DONE $text");
+                // OTP = text;
               },
               wrapAlignment: WrapAlignment.end,
               pinBoxHeight: 50,

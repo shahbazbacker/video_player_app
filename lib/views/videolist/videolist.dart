@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player_test/controllers/video_controller.dart';
+import 'package:video_player_test/views/video_detail/video_detail_view.dart';
 
 class VideoListView extends StatelessWidget {
   final VideoController videoController = Get.put(VideoController());
@@ -33,44 +34,54 @@ class VideoListView extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return Card(
-                        child: Row(
-                          children: <Widget>[
-                            Image(
-                              width: 180.0,
-                              image: NetworkImage(
-                                  "${'http://139.59.89.155'}${videoController.videolist[index].image}"),
-                            ),
-                            SizedBox(width: 10.0),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
-                                    child: Text(
-                                      videoController.videolist[index].name,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 18.0,
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(
+                            ChewieDemo(
+                                // video: videoController.videolist[index],
+                                ),
+                          );
+                        },
+                        child: Card(
+                          child: Row(
+                            children: <Widget>[
+                              Image(
+                                width: 180.0,
+                                image: NetworkImage(
+                                    "${'http://139.59.89.155'}${videoController.videolist[index].image}"),
+                              ),
+                              SizedBox(width: 10.0),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 8.0),
+                                      child: Text(
+                                        videoController.videolist[index].name,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 18.0,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    videoController
-                                        .videolist[index].description,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.0,
+                                    Text(
+                                      videoController
+                                          .videolist[index].description,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16.0,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

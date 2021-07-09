@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'package:video_player/video_player.dart';
+import 'package:video_player_test/constants.dart';
 import 'package:video_player_test/views/video_detail/theme.dart';
 
 class ChewieDemo extends StatefulWidget {
@@ -24,6 +26,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
   VideoPlayerController _videoPlayerController1;
   VideoPlayerController _videoPlayerController2;
   ChewieController _chewieController;
+  String dura;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -124,6 +128,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
+          key: scaffoldKey,
+          drawer: Drawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               // Wrap the play or pause in a call to `setState`. This ensures the
@@ -160,48 +166,53 @@ class _ChewieDemoState extends State<ChewieDemo> {
                         ],
                       ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 5,
-                      width: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
+              TextButton(
+                onPressed: () {
+                  scaffoldKey.currentState.openDrawer();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 5,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(50),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Container(
-                      height: 5,
-                      width: 25,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Container(
+                        height: 5,
+                        width: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(50),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Container(
-                      height: 5,
-                      width: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Container(
+                        height: 5,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(50),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -259,6 +270,42 @@ class _ChewieDemoState extends State<ChewieDemo> {
                   ),
                 ),
               ),
+              Align(
+                alignment: Alignment(1, -0.60),
+                child: Container(
+                  width: 350,
+                  child: ValueListenableBuilder(
+                    valueListenable: _videoPlayerController1,
+                    builder: (context, VideoPlayerValue value, child) {
+                      //Do Something with the value.
+                      if (_videoPlayerController1.value.isInitialized &&
+                          _videoPlayerController1.value.isPlaying) {
+                        return new LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width - 180,
+                          lineHeight: 5.0,
+                          percent: (value.position.inSeconds.toDouble() /
+                              value.duration.inSeconds.toDouble()),
+                          linearStrokeCap: LinearStrokeCap.butt,
+                          backgroundColor: Colors.grey,
+                          progressColor: kGreenColor,
+                        );
+                      } else {
+                        return new LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width - 180,
+                          lineHeight: 5.0,
+                          percent: 0.0,
+                          linearStrokeCap: LinearStrokeCap.butt,
+                          backgroundColor: Colors.grey[600],
+                          progressColor: Colors.amber,
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+              Center(
+                  child:
+                      Text(_videoPlayerController1.value.position.toString())),
             ],
           ),
         ),

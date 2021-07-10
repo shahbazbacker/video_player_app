@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'package:video_player/video_player.dart';
 import 'package:video_player_test/constants.dart';
+import 'package:video_player_test/controllers/video_controller.dart';
+import 'package:video_player_test/views/main_drawer/main_drawer.dart';
+import 'package:video_player_test/views/video_detail/change_notifier.dart';
 import 'package:video_player_test/views/video_detail/theme.dart';
+import 'package:video_player_test/views/video_detail/themechange.dart';
 
 class ChewieDemo extends StatefulWidget {
   const ChewieDemo({
@@ -27,11 +33,17 @@ class _ChewieDemoState extends State<ChewieDemo> {
   VideoPlayerController _videoPlayerController2;
   ChewieController _chewieController;
   String dura;
+  final box = GetStorage();
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  final VideoController videoController = Get.put(VideoController());
 
   @override
   void initState() {
     super.initState();
+    currentTheme.addListener(() {
+      setState(() {});
+    });
     initializePlayer();
   }
 
@@ -126,10 +138,78 @@ class _ChewieDemoState extends State<ChewieDemo> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: currentTheme.currentTheme(),
       home: SafeArea(
         child: Scaffold(
           key: scaffoldKey,
-          drawer: Drawer(),
+          drawer: Drawer(
+            child: Column(children: [
+              Container(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 50.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/icons/profile.png",
+                        width: 65,
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        box.read("userName"),
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        "Software Engenieer",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              //Now let's Add the button for the Menu
+              //and let's copy that and modify it
+              ListTile(
+                onTap: () {},
+                leading: Icon(
+                  Icons.person,
+                  color: Colors.black,
+                ),
+                title: Text("Your Profile"),
+              ),
+
+              ListTile(
+                onTap: () {},
+                leading: Icon(
+                  Icons.settings,
+                  color: Colors.black,
+                ),
+                title: Text("Theme Change"),
+                trailing: IconButton(
+                    icon: const Icon(Icons.brightness_high),
+                    onPressed: () {
+                      currentTheme.switchTheme();
+                    }),
+              ),
+            ]),
+          ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               // Wrap the play or pause in a call to `setState`. This ensures the

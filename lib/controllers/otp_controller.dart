@@ -1,5 +1,6 @@
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:video_player_test/models/otp_model.dart';
 import 'package:video_player_test/services/remote_services.dart';
 import 'package:video_player_test/views/loginsignup/login_signup_view.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ class OtpController extends GetxController {
   final box = GetStorage();
 
   // bool get isOtpScreen => box.read('isOtp') ?? false;
+  User profileUser;
 
   String otpEntered;
   // bool OtpRoute = false;
@@ -36,12 +38,20 @@ class OtpController extends GetxController {
             box.write('isLoggedIn', true);
             box.write('otpNumber', otpEntered);
             print("otp in box phone is ${box.read("phoneNumber")}");
+            profileUser = homeData.user;
+
+            box.write("userName", profileUser.name);
+            box.write("userPhone", profileUser.phone);
+            box.write("userEmail", profileUser.email);
           } else {
             Get.snackbar("Error", "Entered otp is wrong",
                 snackPosition: SnackPosition.BOTTOM);
             box.write('otpNumber', '');
             print("otp in box phone is ${box.read("phoneNumber")}");
             box.write('isLoggedIn', false);
+            box.write("userName", '');
+            box.write("userPhone", '');
+            box.write("userEmail", '');
           }
         }
       } finally {

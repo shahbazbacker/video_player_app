@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 import 'package:video_player_test/constants.dart';
 import 'package:video_player_test/controllers/video_controller.dart';
 import 'package:video_player_test/views/main_drawer/main_drawer.dart';
+import 'package:video_player_test/views/profileview/profileview.dart';
 import 'package:video_player_test/views/video_detail/change_notifier.dart';
 import 'package:video_player_test/views/video_detail/theme.dart';
 import 'package:video_player_test/views/video_detail/themechange.dart';
@@ -28,7 +29,6 @@ class ChewieDemo extends StatefulWidget {
 }
 
 class _ChewieDemoState extends State<ChewieDemo> {
-  TargetPlatform _platform;
   VideoPlayerController _videoPlayerController1;
   VideoPlayerController _videoPlayerController2;
   ChewieController _chewieController;
@@ -171,7 +171,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
                         height: 5.0,
                       ),
                       Text(
-                        "Software Engenieer",
+                        "Software Developer",
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w400,
@@ -186,13 +186,16 @@ class _ChewieDemoState extends State<ChewieDemo> {
               ),
               //Now let's Add the button for the Menu
               //and let's copy that and modify it
-              ListTile(
+              InkWell(
                 onTap: () {},
-                leading: Icon(
-                  Icons.person,
-                  color: Colors.black,
+                child: ListTile(
+                  onTap: () {},
+                  leading: Icon(
+                    Icons.person,
+                    color: Colors.black,
+                  ),
+                  title: Text("Your Profile"),
                 ),
-                title: Text("Your Profile"),
               ),
 
               ListTile(
@@ -209,22 +212,6 @@ class _ChewieDemoState extends State<ChewieDemo> {
                     }),
               ),
             ]),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              // Wrap the play or pause in a call to `setState`. This ensures the
-              // correct icon is shown.
-              setState(() {
-                // If the video is playing, pause it.
-                _chewieController.enterFullScreen();
-              });
-            },
-            // Display the correct icon depending on the state of the player.
-            child: Icon(
-              _videoPlayerController1.value.isPlaying
-                  ? Icons.pause
-                  : Icons.play_arrow,
-            ),
           ),
           body: Stack(
             children: [
@@ -299,9 +286,19 @@ class _ChewieDemoState extends State<ChewieDemo> {
                 padding: const EdgeInsets.all(12.0),
                 child: Align(
                   alignment: Alignment.topRight,
-                  child: Image.asset(
-                    "assets/icons/profile.png",
-                    width: 45,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileView(),
+                        ),
+                      );
+                    },
+                    child: Image.asset(
+                      "assets/icons/profile.png",
+                      width: 45,
+                    ),
                   ),
                 ),
               ),
@@ -351,6 +348,38 @@ class _ChewieDemoState extends State<ChewieDemo> {
                 ),
               ),
               Align(
+                alignment: Alignment(0.9, -0.60),
+                child: Container(
+                  width: 70,
+                  child: ValueListenableBuilder(
+                    valueListenable: _videoPlayerController1,
+                    builder: (context, VideoPlayerValue value, child) {
+                      //Do Something with the value.
+                      if (_videoPlayerController1.value.isInitialized &&
+                          _videoPlayerController1.value.isPlaying) {
+                        return new Text(
+                            ("${value.position.inSeconds.toDouble().toString()}" +
+                                "/" +
+                                "${value.duration.inSeconds.toDouble().toString()}"),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: size.width * 0.035,
+                                fontWeight: FontWeight.w500));
+                      } else {
+                        return new Text(
+                            ("0.0" +
+                                "/" +
+                                "${value.duration.inSeconds.toDouble().toString()}"),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: size.width * 0.035,
+                                fontWeight: FontWeight.w500));
+                      }
+                    },
+                  ),
+                ),
+              ),
+              Align(
                 alignment: Alignment(1, -0.60),
                 child: Container(
                   width: 350,
@@ -383,9 +412,6 @@ class _ChewieDemoState extends State<ChewieDemo> {
                   ),
                 ),
               ),
-              Center(
-                  child:
-                      Text(_videoPlayerController1.value.position.toString())),
             ],
           ),
         ),
